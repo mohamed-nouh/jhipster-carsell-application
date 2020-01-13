@@ -1,0 +1,147 @@
+
+
+
+entity Company {
+compnayId Long  required unique  ,
+companyName String required unique 
+
+}
+
+entity Sub {
+subId Long   required unique  ,
+subName String required unique 
+compnayId Long  ,
+companyName String required  
+}
+
+
+entity Office  {
+officeId Long  required unique  ,
+officeName STring required unique ,
+subId Long  ,
+subName String required unique 
+compnayId Long  ,
+companyName String required  
+
+}
+entity Supplier {
+	supplierId Long  required unique ,
+    supplierName String required ,
+    subName String ,
+    subId Long ,
+    officeName String ,
+    officeId  Long ,
+    createDate LocalDate required ,
+    createName String ,
+    editDate LocalDate ,
+    editName String 
+    
+}
+
+entity Customer {
+	customerId Long  required unique ,
+    customerName String required ,
+    subName String ,
+    subId Long ,
+    officeName String ,
+    officeId  Long ,
+    companyName String ,
+    companyId Long 
+    createDate LocalDate required ,
+    createName String ,
+    editDate LocalDate ,
+    editName String 
+}
+
+
+
+
+
+// an ignored comment
+/** not an ignored comment */
+entity Location {
+	streetAddress String,
+	postalCode String,
+	city String,
+	stateProvince String
+}
+
+entity Department {
+	departmentName String required
+}
+
+/**
+ * Task entity.
+ * @author The JHipster team.
+ */
+entity Task {
+	title String,
+	description String
+}
+
+/**
+ * The Employee entity.
+ */
+entity Employee {
+	/**
+	* The firstname attribute.
+	*/
+	firstName String,
+	lastName String,
+	email String,
+	phoneNumber String,
+	hireDate Instant,
+	salary Long,
+	commissionPct Long
+}
+
+entity Job {
+	jobTitle String,
+	minSalary Long,
+	maxSalary Long
+}
+
+
+
+
+relationship OneToOne {
+
+Location {depertment} to Department {location }
+}
+
+relationship ManyToMany {
+	Job{task(title)} to Task{job}
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	Employee{job} to Job,
+	/**
+	* A relationship
+	*/
+	Department{employee} to
+	/**
+	* Another side of the same relationship
+	*/
+	Employee ,
+ 
+}
+
+relationship ManyToOne {
+   Sub{company(companyName) } to Company ,
+	 Office{Sub(subName) } to Sub 
+}
+
+
+// Set pagination options
+paginate JobHistory, Employee with infinite-scroll
+paginate Job with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Employee, Job
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
